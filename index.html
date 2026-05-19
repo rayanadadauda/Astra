@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Astra</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --black:#0b0b0b;
+  --black2:#111111;
+  --black3:#161616;
+  --border:rgba(255,255,255,0.07);
+  --border-h:rgba(255,255,255,0.14);
+  --white:#ffffff;
+  --gray:#888888;
+  --gray2:#555555;
+  --discord:#5865F2; /* Discord brand color */
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:99;
+  height:58px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 44px;
+  background:rgba(11,11,11,0.96);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+.nav-brand img{width:26px;height:26px;object-fit:contain}
+.nav-brand span{font-family:'Syne',sans-serif;font-weight:800;font-size:0.95rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--white)}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:0.82rem;font-weight:500;letter-spacing:0.05em;transition:color .18s}
+.nav-links a:hover{color:var(--white)}
+.nav-links a.discord{
+  color:#5865F2;
+  font-weight:600;
+}
+.nav-links a.discord:hover{color:#7289da}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:100px 24px 80px;
+}
+.hero-logo{width:72px;height:72px;object-fit:contain;margin-bottom:28px}
+.hero-label{font-size:0.68rem;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:var(--gray2);font-family:'Syne',sans-serif;margin-bottom:16px}
+.hero-title{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(3.8rem,10vw,7.5rem);
+  letter-spacing:-0.025em;line-height:0.92;
+  color:var(--white);margin-bottom:20px;
+}
+.hero-desc{font-size:0.95rem;color:var(--gray);max-width:360px;margin:0 auto 40px;font-weight:400}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--white);color:var(--black);
+  font-family:'Syne',sans-serif;font-weight:700;font-size:0.76rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:12px 28px;border-radius:3px;border:none;cursor:pointer;
+  text-decoration:none;transition:opacity .2s,transform .15s;
+}
+.btn:hover{opacity:0.85;transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn svg{width:14px;height:14px;flex-shrink:0}
+
+.hero-divider{width:1px;height:32px;background:var(--border);margin:56px auto 0}
+.hero-stats{display:flex;align-items:center;gap:36px;margin-top:0;padding-top:28px}
+.stat-n{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--white);display:block}
+.stat-l{font-size:0.7rem;color:var(--gray2);letter-spacing:0.08em;text-transform:uppercase;margin-top:2px;display:block}
+.stat-sep{width:1px;height:36px;background:var(--border)}
+
+/* SECTION */
+.wrap{max-width:1140px;margin:0 auto;padding:88px 44px}
+.sec-tag{font-size:0.67rem;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:var(--gray2);font-family:'Syne',sans-serif;display:block;margin-bottom:12px}
+.sec-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.55rem,3vw,2.1rem);letter-spacing:-0.01em;color:var(--white);margin-bottom:48px}
+
+hr.line{border:none;border-top:1px solid var(--border);margin:0 44px}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.about-img{
+  width:100%;aspect-ratio:16/9;object-fit:cover;
+  display:block;border-radius:5px;border:1px solid var(--border);background:var(--black3)
+}
+.about-img-ph{
+  width:100%;aspect-ratio:16/9;background:var(--black3);
+  border:1px solid var(--border);border-radius:5px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;color:var(--gray2);font-size:0.68rem;letter-spacing:0.14em;
+  font-family:'Syne',sans-serif;font-weight:600;text-transform:uppercase;
+}
+.about-img-ph svg{width:24px;height:24px;opacity:.2}
+.about-text{font-size:0.93rem;font-weight:700;color:#b8b8b8;line-height:1.78;margin-bottom:28px}
+.about-text p+p{margin-top:14px}
+.feats{display:flex;flex-direction:column;gap:8px}
+.feat{
+  display:flex;align-items:center;gap:11px;
+  font-size:0.83rem;font-weight:500;color:var(--gray);
+  padding:10px 14px;background:var(--black2);
+  border:1px solid var(--border);border-radius:4px;
+}
+.feat-dot{width:4px;height:4px;border-radius:50%;background:var(--gray2);flex-shrink:0}
+
+/* VIDEOS */
+.videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.v-card{background:var(--black2);border:1px solid var(--border);border-radius:5px;overflow:hidden;transition:border-color .18s}
+.v-card:hover{border-color:var(--border-h)}
+
+.v-thumb{
+  position:relative;
+  width:100%;
+  height:0;
+  padding-bottom:56.25%;
+  background:var(--black3);
+  overflow:hidden;
+  border-radius:5px 5px 0 0;
+}
+.v-thumb iframe{
+  position:absolute;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  border:none;
+  border-radius:5px 5px 0 0;
+}
+
+.v-meta{padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.v-title{font-family:'Syne',sans-serif;font-size:0.73rem;font-weight:700;letter-spacing:0.05em;color:var(--gray);text-transform:uppercase}
+.v-idx{font-family:'Syne',sans-serif;font-size:0.62rem;color:var(--gray2);letter-spacing:0.1em}
+
+/* DOWNLOAD */
+.dl-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:28px;flex-wrap:wrap;
+}
+.dl-copy .sec-tag{margin-bottom:8px}
+.dl-copy h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.5rem,2.8vw,2rem);letter-spacing:-0.01em;color:var(--white);margin-bottom:8px}
+.dl-copy p{font-size:0.86rem;color:var(--gray);max-width:320px}
+
+/* MODAL */
+.overlay{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;
+}
+.overlay.on{display:flex}
+.modal{
+  background:var(--black2);border:1px solid var(--border);
+  border-radius:7px;padding:32px;width:100%;max-width:440px;margin:20px;position:relative;
+}
+.modal-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.modal-hd h3{font-family:'Syne',sans-serif;font-weight:800;font-size:0.95rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--white)}
+.modal-hd p{font-size:0.76rem;color:var(--gray2);margin-top:3px}
+.modal-x{background:none;border:none;color:var(--gray2);font-size:1.1rem;cursor:pointer;line-height:1;transition:color .15s}
+.modal-x:hover{color:var(--white)}
+.dl-list{display:flex;flex-direction:column;gap:10px}
+.dl-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;background:var(--black3);border:1px solid var(--border);
+  border-radius:5px;text-decoration:none;transition:border-color .18s,background .18s;gap:14px;
+}
+.dl-item:hover{border-color:var(--border-h);background:#181818}
+.dl-item-l{display:flex;align-items:center;gap:12px}
+.dl-svc-img{
+  width:34px;height:34px;object-fit:contain;
+  border-radius:4px;background:rgba(255,255,255,0.04);padding:3px;flex-shrink:0;
+}
+.dl-svc-ph{
+  width:34px;height:34px;border-radius:4px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:0.5rem;color:var(--gray2);flex-shrink:0;
+}
+.dl-svc-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:0.06em;color:var(--white);text-transform:uppercase}
+.dl-svc-sub{font-size:0.71rem;color:var(--gray2);margin-top:2px}
+.dl-open{
+  font-family:'Syne',sans-serif;font-size:0.66rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--black);background:var(--white);
+  padding:6px 14px;border-radius:3px;white-space:nowrap;transition:opacity .15s;flex-shrink:0;
+}
+.dl-item:hover .dl-open{opacity:0.82}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:26px 44px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.ft-brand{display:flex;align-items:center;gap:7px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray)}
+.ft-brand img{width:16px;height:16px;object-fit:contain;opacity:.5}
+footer span{font-size:0.73rem;color:var(--gray2)}
+
+/* REVEAL */
+.r{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+.r.in{opacity:1;transform:translateY(0)}
+
+@media(max-width:740px){
+  nav{padding:0 18px}
+  .nav-links{display:none}
+  .wrap{padding:72px 18px}
+  hr.line{margin:0 18px}
+  .about-grid{grid-template-columns:1fr}
+  footer{padding:22px 18px}
+  .hero-stats{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#">
+    <img src="logo.png" alt="" onerror="this.style.display='none'"/>
+    <span>Astra</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="#download">Download</a></li>
+    <li><a href="https://discord.gg/YZx728HNNC" target="_blank" class="discord">Join Discord</a></li>
+  </ul>
+  <div class="nav-meta">
+    <span class="nav-trusted">Trusted by 100+ users</span>
+    <span class="nav-version">V3</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <img src="logo.png" alt="Astra" class="hero-logo" onerror="this.style.display='none'"/>
+  <p class="hero-label">Roblox External</p>
+  <h1 class="hero-title">Astra</h1>
+  <p class="hero-desc">Built for giving you advantages and domination!.</p>
+  <button class="btn" onclick="openModal()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    Download
+  </button>
+  <div class="hero-divider"></div>
+  <div class="hero-stats">
+    <div>
+      <span class="stat-n">100+</span>
+      <span class="stat-l">Users</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div>
+      <span class="stat-n">9377ee10</span>
+      <span class="stat-l">Version</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div>
+      <span class="stat-n">Free</span>
+      <span class="stat-l">Always</span>
+    </div>
+  </div>
+</section>
+
+<hr class="line"/>
+
+<!-- ABOUT -->
+<div class="wrap r" id="about">
+  <span class="sec-tag">About</span>
+  <h2 class="sec-title">What is Astra?</h2>
+  <div class="about-grid">
+    <div>
+      <img src="showcase.png" alt="Astra UI" class="about-img"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <div class="about-img-ph" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-5L5 21"/>
+        </svg>
+        showcase.png
+      </div>
+    </div>
+    <div class="about-body">
+      <div class="about-text">
+        <p><strong>Astra is a free external.</strong></p>
+        <p><strong>Astra is a tool for educational use.</strong></p>
+        <p><strong>Astra is a tool to also give you many advantages in games such as aimbot, esp, triggerbot etc.</strong></p>
+      </div>
+      <div class="feats">
+        <div class="feat"><div class="feat-dot"></div>Aimbot</div>
+        <div class="feat"><div class="feat-dot"></div>Mouselock</div>
+        <div class="feat"><div class="feat-dot"></div>Silent Aim</div>
+        <div class="feat"><div class="feat-dot"></div>TriggerBot</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="line"/>
+
+<!-- VIDEOS -->
+<div class="wrap r" id="videos">
+  <span class="sec-tag">Showcase</span>
+  <h2 class="sec-title">Videos</h2>
+  <div class="videos-grid">
+
+    <div class="v-card">
+      <div class="v-thumb">
+        <iframe src="https://www.youtube.com/embed/w7x6cZdJpyc?rel=0&amp;modestbranding=1&amp;showinfo=0" 
+                title="Reviewing Astra" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="v-meta">
+        <span class="v-title">Reviewing Astra</span>
+        <span class="v-idx">01</span>
+      </div>
+    </div>
+
+    <div class="v-card">
+      <div class="v-thumb">
+        <iframe src="https://www.youtube.com/embed/NEGDSp4Kqmc?rel=0&amp;modestbranding=1&amp;showinfo=0" 
+                title="Rage Cheating With Astra!" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="v-meta">
+        <span class="v-title">Rage Cheating With Astra!</span>
+        <span class="v-idx">02</span>
+      </div>
+    </div>
+
+    <div class="v-card">
+      <div class="v-thumb">
+        <iframe src="https://www.youtube.com/embed/AxN-zVegml8?rel=0&amp;modestbranding=1&amp;showinfo=0" 
+                title="Showcasing Astra" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="v-meta">
+        <span class="v-title">Showcasing Astra</span>
+        <span class="v-idx">03</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="line"/>
+
+<!-- DOWNLOAD -->
+<div class="wrap r" id="download">
+  <div class="dl-bar">
+    <div class="dl-copy">
+      <span class="sec-tag">Get Started</span>
+      <h2>Download Astra</h2>
+      <p>Free forever. Pick your preferred download gateway.</p>
+    </div>
+    <button class="btn" onclick="openModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Download Now
+    </button>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-brand">
+    <img src="logo.png" alt="" onerror="this.style.display='none'"/>
+    Astra
+  </div>
+  <span>© 2025 Astra</span>
+  <a href="https://discord.gg/YZx728HNNC" target="_blank" style="color:#5865F2; text-decoration:none; font-size:0.73rem;">Join Discord</a>
+</footer>
+
+<!-- MODAL -->
+<div class="overlay" id="modal" onclick="outsideClose(event)">
+  <div class="modal">
+    <div class="modal-hd">
+      <div>
+        <h3>Download Astra</h3>
+        <p>Select a method below</p>
+      </div>
+      <button class="modal-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="dl-list">
+      <a class="dl-item" href="https://link-hub.net/4290685/OibYWkQEr8Xd" target="_blank">
+        <div class="dl-item-l">
+          <img src="linkvertise.png" alt="Linkvertise" class="dl-svc-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="dl-svc-ph" style="display:none;">LV</div>
+          <div>
+            <div class="dl-svc-name">Linkvertise</div>
+            <div class="dl-svc-sub">Fast gateway</div>
+          </div>
+        </div>
+        <div class="dl-open">Open</div>
+      </a>
+
+      <a class="dl-item" href="nolootlabs yet" target="_blank">
+        <div class="dl-item-l">
+          <img src="lootlabs.png" alt="Lootlabs" class="dl-svc-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="dl-svc-ph" style="display:none;">LL</div>
+          <div>
+            <div class="dl-svc-name">Lootlabs Not here yet.</div>
+            <div class="dl-svc-sub">Alternative gateway</div>
+          </div>
+        </div>
+        <div class="dl-open">Open</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(){document.getElementById('modal').classList.add('on');document.body.style.overflow='hidden'}
+function closeModal(){document.getElementById('modal').classList.remove('on');document.body.style.overflow=''}
+function outsideClose(e){if(e.target===document.getElementById('modal'))closeModal()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()})
+
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.08})
+document.querySelectorAll('.r').forEach(el=>io.observe(el))
+</script>
+</body>
+</html>
