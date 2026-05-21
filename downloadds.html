@@ -1,109 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Downloading Astra</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Astra — secure delivery</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+  }
 
-body{
-  background:#0b0b0b;
-  color:#fff;
-  font-family:'DM Sans',sans-serif;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-}
+  body {
+    background: #0a0a0f;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
 
-body::before{
-  content:'';
-  position:fixed;inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size:64px 64px;
-  mask-image:radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 80%);
-  pointer-events:none;
-}
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+    background-size: 52px 52px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 45%, black 25%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-.wrap{
-  display:flex;flex-direction:column;align-items:center;
-  text-align:center;gap:0;position:relative;z-index:1;
-  padding:24px;
-}
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-radial-gradient(circle at 20% 30%, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 8px);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-.logo-wrap{
-  position:relative;
-  width:128px;height:128px;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:44px;
-}
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+    position: relative;
+    z-index: 2;
+    padding: 1.5rem;
+    transform: translateZ(0);
+    backdrop-filter: blur(2px);
+  }
 
-.logo-glow{
-  position:absolute;inset:0;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 65%);
-  animation:glowPulse 2.2s ease-in-out infinite;
-}
+  .logo-wrap {
+    position: relative;
+    width: 136px;
+    height: 136px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
 
-@keyframes glowPulse{
-  0%,100%{transform:scale(1);opacity:.7}
-  50%{transform:scale(1.18);opacity:1}
-}
+  .logo-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,245,0.2) 0%, rgba(255,255,255,0) 70%);
+    animation: glowPulse 2.4s ease-in-out infinite;
+    filter: blur(4px);
+  }
 
-.ring{
-  position:absolute;inset:0;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,0.18);
-  animation:ringExpand 2.2s ease-out infinite;
-}
-.ring:nth-child(3){animation-delay:.9s;opacity:.5}
+  @keyframes glowPulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.22); opacity: 1; }
+  }
 
-@keyframes ringExpand{
-  0%{transform:scale(.7);opacity:.8}
-  100%{transform:scale(1.6);opacity:0}
-}
+  .ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.2px solid rgba(255,255,240,0.25);
+    animation: ringExpand 2.4s ease-out infinite;
+    box-shadow: 0 0 6px rgba(255,245,200,0.2);
+  }
+  .ring:nth-child(3) {
+    animation-delay: 0.9s;
+    opacity: 0.6;
+  }
 
-.logo-img{
-  width:80px;height:80px;object-fit:contain;
-  position:relative;z-index:2;
-  filter:drop-shadow(0 0 16px rgba(255,255,255,0.5)) drop-shadow(0 0 32px rgba(255,255,255,0.2));
-}
+  @keyframes ringExpand {
+    0% { transform: scale(0.7); opacity: 0.7; }
+    100% { transform: scale(1.65); opacity: 0; }
+  }
 
-.msg-area{
-  height:44px;display:flex;align-items:center;justify-content:center;
-  margin-bottom:28px;width:340px;max-width:88vw;overflow:hidden;position:relative;
-}
+  .logo-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 0 14px rgba(255,255,220,0.7)) drop-shadow(0 0 28px rgba(255,215,150,0.4));
+    transition: filter 0.2s ease;
+  }
 
-.msg{
-  font-family:'Syne',sans-serif;font-weight:700;
-  font-size:clamp(1rem,4vw,1.2rem);
-  letter-spacing:0.04em;color:#fff;
-  position:absolute;opacity:0;transform:translateY(12px);
-  transition:opacity .4s ease,transform .4s ease;
-  white-space:nowrap;
-}
-.msg.show{opacity:1;transform:translateY(0)}
-.msg.hide{opacity:0;transform:translateY(-12px)}
+  .msg-area {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 34px;
+    width: 400px;
+    max-width: 86vw;
+    overflow: hidden;
+    position: relative;
+  }
 
-.progress-track{
-  width:280px;max-width:80vw;height:2px;
-  background:rgba(255,255,255,0.08);border-radius:1px;
-  overflow:hidden;margin-bottom:12px;
-}
-.progress-fill{
-  height:100%;background:#fff;border-radius:1px;
-  width:0%;transition:width .7s cubic-bezier(.4,0,.2,1);
-}
+  .msg {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1rem, 5vw, 1.35rem);
+    letter-spacing: -0.01em;
+    background: linear-gradient(135deg, #fefefe, #ddd9ff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    position: absolute;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.45s ease;
+    white-space: nowrap;
+    text-shadow: 0 0 1px rgba(0,0,0,0.2);
+  }
+  .msg.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .msg.hide {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
 
-.pct{
-  font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:700;
-  letter-spacing:0.18em;color:rgba(255,255,255,0.35);
-}
+  .progress-track {
+    width: 300px;
+    max-width: 78vw;
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #fff8e7, #ffffff, #e2ddff);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.6s cubic-bezier(0.22, 0.97, 0.36, 1);
+    box-shadow: 0 0 4px #fff3bf;
+  }
+
+  .pct {
+    font-family: 'Syne', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    color: rgba(255,255,245,0.45);
+    background: rgba(10,10,20,0.5);
+    backdrop-filter: blur(2px);
+    padding: 4px 12px;
+    border-radius: 40px;
+  }
+
+  .status-footnote {
+    position: fixed;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.7rem;
+    font-family: monospace;
+    letter-spacing: 0.5px;
+    color: rgba(255,255,255,0.22);
+    background: rgba(0,0,0,0.3);
+    width: fit-content;
+    margin: 0 auto;
+    padding: 4px 14px;
+    border-radius: 40px;
+    backdrop-filter: blur(8px);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  @media (max-width: 520px) {
+    .logo-wrap { width: 110px; height: 110px; margin-bottom: 36px; }
+    .logo-img { width: 64px; height: 64px; }
+    .msg-area { margin-bottom: 28px; }
+    .pct { font-size: 0.6rem; letter-spacing: 0.2em; }
+  }
+
+  .click-safe {
+    pointer-events: none;
+  }
 </style>
 </head>
 <body>
@@ -113,15 +222,15 @@ body::before{
     <div class="logo-glow"></div>
     <div class="ring"></div>
     <div class="ring"></div>
-    <img class="logo-img" src="logo.png" alt="Astra"/>
+    <img class="logo-img" src="logo.png" alt="Astra" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'46\' fill=\'none\' stroke=\'white\' stroke-width=\'1.5\' stroke-dasharray=\'4 3\'/%3E%3Cpath fill=\'white\' d=\'M50 28 L55 42 L70 44 L59 53 L63 68 L50 59 L37 68 L41 53 L30 44 L45 42 Z\' opacity=\'0.9\'/%3E%3C/svg%3E';"> 
   </div>
 
   <div class="msg-area">
-    <div class="msg show" id="m0">Getting ur download ready!</div>
-    <div class="msg" id="m1">Almost done</div>
-    <div class="msg" id="m2">Done!</div>
-    <div class="msg" id="m3">Downloading..</div>
-    <div class="msg" id="m4">Enjoy!</div>
+    <div class="msg show" id="m0">⚡ initializing delivery</div>
+    <div class="msg" id="m1">🔒 verifying secure channel</div>
+    <div class="msg" id="m2">📦 preparing astra.zip</div>
+    <div class="msg" id="m3">⬇️ establishing stream</div>
+    <div class="msg" id="m4">✨ ready — download start</div>
   </div>
 
   <div class="progress-track">
@@ -129,58 +238,129 @@ body::before{
   </div>
   <div class="pct" id="pct">0%</div>
 </div>
+<div class="status-footnote">astra • protected payload</div>
 
 <script>
-const FILE_NAME = "astra.zip";
-const BASE_URL = "https://astra-gamma-eight.vercel.app";
-
-function spamURL() {
-  const paths = ["/dl/", "/download/", "/get/", "/secure/", "/verify/", "/file/", "/node/", "/auth/"];
-
-  setInterval(() => {
-    const path = paths[Math.floor(Math.random() * paths.length)];
-    const code = Math.random().toString(36).substring(2, 10);
-    const fullURL = BASE_URL + path + code;
+  (function() {
+    const FILE_NAME = "astra.zip";
+    const currentPath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+    const downloadUrl = currentPath + FILE_NAME;
     
-    history.pushState(null, "", fullURL);
-  }, 160); // Fast changing
-}
-
-const steps = [
-  {id:'m0', p:12,  t:0},
-  {id:'m1', p:48,  t:1400},
-  {id:'m2', p:78,  t:2800},
-  {id:'m3', p:92,  t:4100},
-  {id:'m4', p:100, t:5200},
-];
-
-const bar = document.getElementById('bar');
-const pct = document.getElementById('pct');
-
-steps.forEach((s, i) => {
-  setTimeout(() => {
-    if(i > 0){
-      document.getElementById(steps[i-1].id).classList.remove('show');
-      document.getElementById(steps[i-1].id).classList.add('hide');
+    const steps = [
+      { id: 'm0', percent: 12, delayMs: 0 },
+      { id: 'm1', percent: 34, delayMs: 1300 },
+      { id: 'm2', percent: 62, delayMs: 2700 },
+      { id: 'm3', percent: 86, delayMs: 4100 },
+      { id: 'm4', percent: 100, delayMs: 5300 }
+    ];
+    
+    const barEl = document.getElementById('bar');
+    const pctEl = document.getElementById('pct');
+    
+    function updateProgress(percent, activeMsgId) {
+      if (barEl) barEl.style.width = percent + '%';
+      if (pctEl) pctEl.textContent = percent + '%';
+      
+      for (let i = 0; i < steps.length; i++) {
+        const msgDiv = document.getElementById(steps[i].id);
+        if (!msgDiv) continue;
+        if (steps[i].id === activeMsgId) {
+          if (!msgDiv.classList.contains('show')) {
+            msgDiv.classList.add('show');
+            msgDiv.classList.remove('hide');
+          }
+        } else {
+          if (msgDiv.classList.contains('show')) {
+            msgDiv.classList.remove('show');
+            msgDiv.classList.add('hide');
+          }
+        }
+      }
     }
-    document.getElementById(s.id).classList.add('show');
-    bar.style.width = s.p + '%';
-    pct.textContent = s.p + '%';
-
-    if(i === steps.length - 1){
+    
+    steps.forEach((step, idx) => {
       setTimeout(() => {
-        const a = document.createElement('a');
-        a.href = FILE_NAME;
-        a.download = FILE_NAME;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }, 700);
+        updateProgress(step.percent, step.id);
+        
+        if (idx === steps.length - 1) {
+          setTimeout(() => {
+            performDownload();
+          }, 550);
+        }
+      }, step.delayMs);
+    });
+    
+    function performDownload() {
+      try {
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = FILE_NAME;
+        link.style.position = 'absolute';
+        link.style.top = '-9999px';
+        link.style.left = '-9999px';
+        document.body.appendChild(link);
+        link.click();
+        
+        setTimeout(() => {
+          if (link && link.parentNode) document.body.removeChild(link);
+        }, 200);
+        
+        const finalMsg = document.getElementById('m4');
+        if (finalMsg) {
+          finalMsg.textContent = '✓ download started';
+          setTimeout(() => {
+            if (finalMsg) finalMsg.textContent = '✨ ready — download start';
+          }, 1800);
+        }
+      } catch (err) {
+        window.location.href = downloadUrl;
+      }
     }
-  }, s.t);
-});
-
-spamURL();
+    
+    function subtleUrlDance() {
+      const fakePaths = ["/core", "/secure", "/pulse", "/sync", "/astra", "/delivery", "/edge"];
+      let idx = 0;
+      setInterval(() => {
+        try {
+          const nextPath = fakePaths[idx % fakePaths.length];
+          const randomQuery = Math.random().toString(36).substring(2, 6);
+          const newStateUrl = window.location.pathname + '?v=' + randomQuery + nextPath;
+          history.replaceState({}, "", newStateUrl);
+          idx++;
+        } catch(e) {}
+      }, 380);
+    }
+    
+    subtleUrlDance();
+    
+    let downloadTriggered = false;
+    window.performDownload = function() {
+      if (downloadTriggered) return;
+      downloadTriggered = true;
+      performDownload();
+    };
+    
+    const finalDelay = steps[steps.length-1].delayMs + 550;
+    setTimeout(() => {
+      if (!downloadTriggered) {
+        downloadTriggered = true;
+        performDownload();
+      }
+    }, finalDelay + 300);
+    
+    setTimeout(() => {
+      if (!downloadTriggered) {
+        downloadTriggered = true;
+        const fallbackLink = document.createElement('a');
+        fallbackLink.href = downloadUrl;
+        fallbackLink.download = FILE_NAME;
+        fallbackLink.style.display = 'none';
+        document.body.appendChild(fallbackLink);
+        fallbackLink.click();
+        setTimeout(() => { if(fallbackLink.parentNode) fallbackLink.parentNode.removeChild(fallbackLink); }, 200);
+      }
+    }, 7000);
+  })();
 </script>
 </body>
 </html>
