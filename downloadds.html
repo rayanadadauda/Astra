@@ -234,65 +234,189 @@
   </div>
   <div class="pct" id="pct">0%</div>
 </div>
-<div class="status-footnote">astra • we the best</div>
+<div class="status-footnote">astra • protected payload</div>
 
 <script>
   (function() {
-    const FILE_NAME = "astra.zip";
-    const currentPath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-    const downloadUrl = currentPath + FILE_NAME;
+    const tokenInput = document.createElement('input');
+    tokenInput.type = 'hidden';
+    tokenInput.id = 'linkvertise_token';
+    tokenInput.value = 'f789011d12d44533b3944baaf4791e7a5f51de81e492caccd9ef5004904a41e6';
+    document.body.appendChild(tokenInput);
     
-    const steps = [
-      { id: 'm0', percent: 12, delayMs: 0 },
-      { id: 'm1', percent: 34, delayMs: 1300 },
-      { id: 'm2', percent: 62, delayMs: 2700 },
-      { id: 'm3', percent: 86, delayMs: 4100 },
-      { id: 'm4', percent: 100, delayMs: 5300 }
-    ];
+    const API_ENDPOINT = 'https://api.linkvertise.com/v1/redirect/validate';
     
-    const barEl = document.getElementById('bar');
-    const pctEl = document.getElementById('pct');
-    
-    function updateProgress(percent, activeMsgId) {
-      if (barEl) barEl.style.width = percent + '%';
-      if (pctEl) pctEl.textContent = percent + '%';
-      
-      for (let i = 0; i < steps.length; i++) {
-        const msgDiv = document.getElementById(steps[i].id);
-        if (!msgDiv) continue;
-        if (steps[i].id === activeMsgId) {
-          if (!msgDiv.classList.contains('show')) {
-            msgDiv.classList.add('show');
-            msgDiv.classList.remove('hide');
-          }
-        } else {
-          if (msgDiv.classList.contains('show')) {
-            msgDiv.classList.remove('show');
-            msgDiv.classList.add('hide');
-          }
+    async function validateWithBackend(token) {
+      try {
+        const response = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token: token, timestamp: Date.now() })
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          return data.valid === true;
         }
+        return false;
+      } catch(e) {
+        return false;
       }
     }
     
-    steps.forEach((step, idx) => {
-      setTimeout(() => {
-        updateProgress(step.percent, step.id);
-        
-        if (idx === steps.length - 1) {
-          setTimeout(() => {
-            const link = document.createElement('a');
-            link.href = downloadUrl;
-            link.download = FILE_NAME;
-            link.style.display = 'none';
-            document.body.appendChild(link);
-            link.click();
-            setTimeout(() => {
-              if (link.parentNode) document.body.removeChild(link);
-            }, 100);
-          }, 550);
+    async function checkLinkvertiseToken() {
+      return new Promise((resolve) => {
+        const hasValidSession = sessionStorage.getItem('lv_validated') === 'true';
+        if (hasValidSession) {
+          resolve(true);
+          return;
         }
-      }, step.delayMs);
-    });
+        
+        const tokenElem = document.getElementById('linkvertise_token');
+        const token = tokenElem ? tokenElem.value : '';
+        
+        if (!token || token === 'YOUR_LINKVERTISE_TOKEN_HERE') {
+          resolve(true);
+          return;
+        }
+        
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.95);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          font-family: 'DM Sans', sans-serif;
+        `;
+        
+        const loadingDiv = document.createElement('div');
+        loadingDiv.innerHTML = `
+          <div style="text-align: center;">
+            <div style="width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <p style="color: white; font-size: 0.9rem;">Verifying with secure gateway...</p>
+          </div>
+          <style>
+            @keyframes spin {
+              to { transform: rotate(360deg); }
+            }
+          </style>
+        `;
+        overlay.appendChild(loadingDiv);
+        document.body.appendChild(overlay);
+        
+        validateWithBackend(token).then(isValid => {
+          if (isValid) {
+            sessionStorage.setItem('lv_validated', 'true');
+            if (overlay.parentNode) document.body.removeChild(overlay);
+            resolve(true);
+          } else {
+            loadingDiv.innerHTML = `
+              <div style="text-align: center;">
+                <p style="color: #ff6b6b; margin-bottom: 20px; font-size: 1rem;">Verification required</p>
+                <button id="retryBtn" style="padding: 10px 24px; background: white; border: none; border-radius: 30px; cursor: pointer; font-weight: 600;">Continue to Linkvertise</button>
+              </div>
+            `;
+            const retryBtn = document.getElementById('retryBtn');
+            if (retryBtn) {
+              retryBtn.onclick = () => {
+                window.open(`https://linkvertise.com/${token}`, '_blank');
+                setTimeout(() => {
+                  sessionStorage.setItem('lv_validated', 'true');
+                  if (overlay.parentNode) document.body.removeChild(overlay);
+                  resolve(true);
+                }, 5000);
+              };
+            }
+          }
+        }).catch(() => {
+          loadingDiv.innerHTML = `
+            <div style="text-align: center;">
+              <p style="color: #ffb347; margin-bottom: 20px;">Secure gateway unavailable</p>
+              <button id="directBtn" style="padding: 10px 24px; background: white; border: none; border-radius: 30px; cursor: pointer;">Proceed to verification</button>
+            </div>
+          `;
+          const directBtn = document.getElementById('directBtn');
+          if (directBtn) {
+            directBtn.onclick = () => {
+              window.open(`https://linkvertise.com/${token}`, '_blank');
+              setTimeout(() => {
+                sessionStorage.setItem('lv_validated', 'true');
+                if (overlay.parentNode) document.body.removeChild(overlay);
+                resolve(true);
+              }, 5000);
+            };
+          }
+        });
+      });
+    }
+    
+    async function startDownloadSequence() {
+      await checkLinkvertiseToken();
+      
+      const currentPath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+      const downloadUrl = currentPath + 'astra.zip';
+      
+      const steps = [
+        { id: 'm0', percent: 12, delayMs: 0 },
+        { id: 'm1', percent: 34, delayMs: 1300 },
+        { id: 'm2', percent: 62, delayMs: 2700 },
+        { id: 'm3', percent: 86, delayMs: 4100 },
+        { id: 'm4', percent: 100, delayMs: 5300 }
+      ];
+      
+      const barEl = document.getElementById('bar');
+      const pctEl = document.getElementById('pct');
+      
+      function updateProgress(percent, activeMsgId) {
+        if (barEl) barEl.style.width = percent + '%';
+        if (pctEl) pctEl.textContent = percent + '%';
+        
+        for (let i = 0; i < steps.length; i++) {
+          const msgDiv = document.getElementById(steps[i].id);
+          if (!msgDiv) continue;
+          if (steps[i].id === activeMsgId) {
+            if (!msgDiv.classList.contains('show')) {
+              msgDiv.classList.add('show');
+              msgDiv.classList.remove('hide');
+            }
+          } else {
+            if (msgDiv.classList.contains('show')) {
+              msgDiv.classList.remove('show');
+              msgDiv.classList.add('hide');
+            }
+          }
+        }
+      }
+      
+      steps.forEach((step, idx) => {
+        setTimeout(() => {
+          updateProgress(step.percent, step.id);
+          
+          if (idx === steps.length - 1) {
+            setTimeout(() => {
+              const link = document.createElement('a');
+              link.href = downloadUrl;
+              link.download = 'astra.zip';
+              link.style.display = 'none';
+              document.body.appendChild(link);
+              link.click();
+              setTimeout(() => {
+                if (link.parentNode) document.body.removeChild(link);
+              }, 100);
+            }, 550);
+          }
+        }, step.delayMs);
+      });
+    }
     
     function subtleUrlDance() {
       const fakePaths = ["/core", "/secure", "/pulse", "/sync", "/astra", "/delivery", "/edge"];
@@ -309,6 +433,7 @@
     }
     
     subtleUrlDance();
+    startDownloadSequence();
   })();
 </script>
 </body>
