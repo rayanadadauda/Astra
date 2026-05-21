@@ -209,10 +209,6 @@
     .msg-area { margin-bottom: 28px; }
     .pct { font-size: 0.6rem; letter-spacing: 0.2em; }
   }
-
-  .click-safe {
-    pointer-events: none;
-  }
 </style>
 </head>
 <body>
@@ -284,38 +280,19 @@
         
         if (idx === steps.length - 1) {
           setTimeout(() => {
-            performDownload();
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = FILE_NAME;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            setTimeout(() => {
+              if (link.parentNode) document.body.removeChild(link);
+            }, 100);
           }, 550);
         }
       }, step.delayMs);
     });
-    
-    function performDownload() {
-      try {
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.download = FILE_NAME;
-        link.style.position = 'absolute';
-        link.style.top = '-9999px';
-        link.style.left = '-9999px';
-        document.body.appendChild(link);
-        link.click();
-        
-        setTimeout(() => {
-          if (link && link.parentNode) document.body.removeChild(link);
-        }, 200);
-        
-        const finalMsg = document.getElementById('m4');
-        if (finalMsg) {
-          finalMsg.textContent = '✓ download started';
-          setTimeout(() => {
-            if (finalMsg) finalMsg.textContent = '✨ ready — download start';
-          }, 1800);
-        }
-      } catch (err) {
-        window.location.href = downloadUrl;
-      }
-    }
     
     function subtleUrlDance() {
       const fakePaths = ["/core", "/secure", "/pulse", "/sync", "/astra", "/delivery", "/edge"];
@@ -332,34 +309,6 @@
     }
     
     subtleUrlDance();
-    
-    let downloadTriggered = false;
-    window.performDownload = function() {
-      if (downloadTriggered) return;
-      downloadTriggered = true;
-      performDownload();
-    };
-    
-    const finalDelay = steps[steps.length-1].delayMs + 550;
-    setTimeout(() => {
-      if (!downloadTriggered) {
-        downloadTriggered = true;
-        performDownload();
-      }
-    }, finalDelay + 300);
-    
-    setTimeout(() => {
-      if (!downloadTriggered) {
-        downloadTriggered = true;
-        const fallbackLink = document.createElement('a');
-        fallbackLink.href = downloadUrl;
-        fallbackLink.download = FILE_NAME;
-        fallbackLink.style.display = 'none';
-        document.body.appendChild(fallbackLink);
-        fallbackLink.click();
-        setTimeout(() => { if(fallbackLink.parentNode) fallbackLink.parentNode.removeChild(fallbackLink); }, 200);
-      }
-    }, 7000);
   })();
 </script>
 </body>
